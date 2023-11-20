@@ -1,0 +1,53 @@
+/* styles.css */
+.back-to-main {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      outline: none;
+    }
+
+.print-resposta-pt {
+    position: absolute;
+    top: 140px;
+    right: 600px;
+}
+
+.print-resposta-vli {
+    position: absolute;
+    top: 100px;
+    right: 550px;
+}
+
+
+.align-top {
+    position: absolute;
+    top: 150px;
+    right: 300px;
+  }
+
+.alinha-payout {
+    position: absolute;
+    top: 110px;
+    right: 300px;
+  }
+.alinha-nu {
+    position: absolute;
+    top: 210px;
+    right: 300px;
+  }
+
+ .alinha-button {
+ position: absolute;
+ top: 350px;
+ right: 300px;
+ }
+
+.alinha-resposta {
+    position: absolute;
+     top: 450px;
+     right: 300px;
+    }
