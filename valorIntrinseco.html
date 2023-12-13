@@ -12,16 +12,70 @@
 </head>
 <body>
 
+    <!--Formulário para buscar os dados do ticker-->
+    <!--<div class="container mt-5">
+        <form id="tickerform">
+          
+            <div class="form-group col-md-6">
+                <label for="tickerInput" class="form-label">Ticker da Empresa:</label>
+                <input type="text" class="form-control" id="tickerInput" name="ticker" required>
+            </div>
+    
+            <div>
+                <button type="submit" class="btn btn-primary col-md-3 mt-2">Run</button>
+            </div>
+    
+    </form>
+    <div class="row mt-6">
+        <div class="col-md-12">
+            <div class="mt-4">
+                <div id="ticker_empresa"></div>
+                <div id="precoTela"></div>
+                <div id="resultado"></div>
+                <div id="lpa"></div>
+                <div id="vpa"></div>
+                <div id="dividendYield"></div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+    $("#tickerform").submit(function(event) {
+        event.preventDefault();
+        var ticker = $("#tickerInput").val();
+
+        // AJAX para o backend em Python
+        $.ajax({
+            type: "GET", // Alterado para GET, já que a rota '/buscar' está configurada como GET
+            url: "http://localhost:5000/buscar",
+            data: { ticker: ticker }, 
+            success: function(resultado) {
+                var tickerRetorno = resultado.ticker;
+                var preco_atual = resultado.precoTela;
+                var dividend_yield = resultado.dividendYield; 
+                var lpa = resultado.lpa;
+                var vpa = resultado.vpa;
+
+                $("#ticker_empresa").html("Ticker: " + tickerRetorno);
+                $("#precoTela").html("Preço Atual: " + preco_atual.toFixed(2));
+                $("#dividend_yield").html("Dividend Yield: " + dividend_yield.toFixed(2));
+                $("#lpa").html("LPA: " + lpa.toFixed(2));
+                $("#vpa").html("VPA: " + vpa.toFixed(2));
+            },
+            error: function() {
+                $("#resultado").html("Ocorreu um erro ao calcular o valor intrínseco.");
+            }
+        });
+    });
+});
+</script>
+
 <div class="container mt-5">
     <form id="calculadoraForm">
-
-        <!-- Adicionando o campo do ticker -->
-        <div class="form-group col-md-6">
-            <label for="ticker" class="form-label">Ticker da Empresa:</label>
-            <input type="text" class="form-control" id="ticker" name="ticker" required>
-        </div>
-        <button type="submit" class="btn btn-primary col-md-3 mt-2">Buscar Ticker</button>
-
         
         <div class="form-group col-md-3">
             <label for="precoTela">Preço Atual:</label>

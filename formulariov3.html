@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Valor Intrínseco</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style/styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="text-center">
+        <h1>Valor Intrinseco</h1>
+    </div>
+    <!--Formulário para buscar os dados do ticker-->
+    <div class="container mt-5">
+        <form id="tickerform">
+            <!-- Adicionando o campo do ticker -->
+            <div class="form-group col-md-3">
+                <label for="tickerInput" class="form-label">Ticker da Empresa:</label>
+                <input type="text" class="form-control" id="tickerInput" name="ticker" required>
+            </div>
+    
+            <div>
+                <button type="submit" class="btn btn-primary col-md-3 mt-2">Pesquisar</button>
+            </div>
+    </form>
+
+    <!--<div class="container mt-5">
+        <form id="calculadoraForm">
+            <div class="form-group col-md-6">
+                <div>
+                    <button type="submit" class="btn btn-primary col-md-3 mt-2">Calcular Valor Intrínseco</button>
+                </div>
+            </div>  
+        </form>
+    </div>-->
+
+    <!--Print das Respostas-->
+    <div class="row mt-6">
+        <div class="col-md-12">
+            <div class="mt-4">
+                <div id="ticker_empresa"></div>
+                <div id="precoTela"></div>
+                <div id="resultadoticker"></div>
+                <div id="lpa"></div>
+                <div id="vpa"></div>
+                <div id="dividendYield"></div>
+                <div id="precoAtual"></div>
+                <div id="resultadocalculadora"></div>
+                <div id="margemSeguranca"></div>
+                <div id="recomendacaoCompra"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="container mt-5">
+    <form id="calculadoraForm">
+        <div class="form-group col-md-6">
+            <button type="submit" class="btn btn-primary  col-md-3 mt-2">Calcular Valor Intrínseco</button>
+        </div>  
+    </form>
+</div>-->
+        
+
+<!--Modal-->
+
+  <!--Fim do Modal-->
+    <!--<div class="row mt-6">
+            <div class="col-md-12">
+                <div class="mt-4">
+                    <div id="precoAtual"></div>
+                    <div id="resultadocalculadora"></div>
+                    <div id="margemSeguranca"></div>
+                    <div id="recomendacaoCompra"></div>
+                </div>
+            </div>
+        </div>-->
+   
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</div>
+<!-- Botão de retorno ao index-->
+<button class="back-to-main">
+    <a href="index.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+             fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+    </a>
+</button>
+<script>
+    /*$(document).ready(function() {
+        $("#tickerform").submit(function(event) {
+            event.preventDefault();
+            var ticker = $("#tickerInput").val();
+    
+            // AJAX para o backend em Python
+            $.ajax({
+                type: "GET", 
+                url: "http://localhost:5000/buscar",
+                data: { ticker: ticker }, 
+                success: function(resultadoticker) {
+                    var tickerRetorno = resultadoticker.ticker;
+                    var precoTela = resultadoticker.precoTela;
+                    var dividendYield = resultadoticker.dividendYield; 
+                    var lpa = resultadoticker.lpa;
+                    var vpa = resultadoticker.vpa;
+    
+                    $("#ticker_empresa").html("Ticker: " + tickerRetorno);
+                    $("#precoTela").html("Preço Atual: " + precoTela.toFixed(2));
+                    $("#dividendYield").html("Dividend Yield: " + dividendYield.toFixed(2) + "%");
+                    $("#lpa").html("LPA: " + lpa.toFixed(2));
+                    $("#vpa").html("VPA: " + vpa.toFixed(2));
+                },
+                error: function() {
+                    $("#resultadoticker").html("Ocorreu um erro ao obter dados do ticker.");
+                }
+            });
+        });
+    });*/
+    
+    $(document).ready(function() {
+        //$("#calculadoraForm").submit(function(event) {
+        $("#tickerform").submit(function(event) {
+            event.preventDefault();
+    
+            var ticker = $("#tickerInput").val();
+            
+            // Realize a chamada AJAX para a API Flask
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:5000/buscar",
+                data: { ticker: ticker },
+                success: function(resultadoticker) {
+                    if (resultadoticker.error) {
+                        console.error(resultadoticker.error);
+                        return;
+                    }
+                    
+                    var tickerRetorno = resultadoticker.ticker;
+                    var precoTela = resultadoticker.precoTela;
+                    var dividendYield = resultadoticker.dividendYield; 
+                    var lpa = resultadoticker.lpa;
+                    var vpa = resultadoticker.vpa;
+
+                    $("#ticker_empresa").html("Ticker: " + tickerRetorno);
+                    $("#precoTela").html("Preço Atual: " + precoTela.toFixed(2));
+                    $("#dividendYield").html("Dividend Yield: " + dividendYield.toFixed(2) + "%");
+                    $("#lpa").html("LPA: " + lpa.toFixed(2));
+                    $("#vpa").html("VPA: " + vpa.toFixed(2));
+
+
+
+                    var precoTela = resultadoticker.precoTela;
+                    var dividendYield = resultadoticker.dividendYield;
+                    var lpa = resultadoticker.lpa;
+                    var vpa = resultadoticker.vpa;
+    
+                    // Realize a chamada AJAX para o backend em Java
+                    $.ajax({
+                        type: "POST",
+                        url: "http://192.168.15.13:8080/calcular-valor-intrinseco",
+                        data: { precoTela: precoTela, dividendYield: dividendYield, lpa: lpa, vpa: vpa },
+                        success: function(resultadocalculadora) {
+                            var precoAtual = resultadoticker.precoTela;
+                            var valorIntrinseco = resultadocalculadora.valorIntrinseco;
+                            var margemSeguranca = resultadocalculadora.margemSeguranca;
+                            var recomendacaoCompra = resultadocalculadora.recomendarCompra;
+
+                            $("#precoAtual").html("Preço Atual: " + precoAtual.toFixed(2));
+                            $("#resultadocalculadora").html("Valor Intrínseco: " + valorIntrinseco.toFixed(2));
+                            $("#margemSeguranca").html("Margem de Segurança: " + margemSeguranca.toFixed(2) + "%");
+                            $("#recomendacaoCompra").html("Recomendação: " + recomendacaoCompra);
+                        },
+                        error: function() {
+                            $("#resultadocalculadora").html("Ocorreu um erro ao calcular o valor intrínseco.");
+                        }
+                    });
+                },
+                error: function() {
+                    console.error("Ocorreu um erro ao obter dados da API Flask.");
+                }
+            });
+        });
+    });
+    </script>
+    </body>
+</html>
