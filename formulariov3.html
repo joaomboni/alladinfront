@@ -164,7 +164,7 @@
                     // Realize a chamada AJAX para o backend em Java
                     $.ajax({
                         type: "POST",
-                        url: "http://192.168.15.13:8080/calcular-valor-intrinseco",
+                        url: "http://localhost:8080/calcular-valor-intrinseco",
                         data: { precoTela: precoTela, dividendYield: dividendYield, lpa: lpa, vpa: vpa },
                         success: function(resultadocalculadora) {
                             var precoAtual = resultadoticker.precoTela;
